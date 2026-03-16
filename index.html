@@ -3,57 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Élections Municipales 2026</title>
+  <title>Dashboard Municipales 2026 • Ministère only</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: rgba(17, 24, 39, 0.86);
-      --panel-2: rgba(30, 41, 59, 0.78);
+      --bg: #06101f;
+      --bg-2: #0b1220;
+      --panel: rgba(15, 23, 42, 0.82);
+      --panel-strong: rgba(15, 23, 42, 0.94);
       --line: rgba(148, 163, 184, 0.18);
       --text: #eef2ff;
       --muted: #94a3b8;
       --accent: #60a5fa;
       --accent-2: #34d399;
+      --accent-3: #fbbf24;
       --danger: #fb7185;
-      --warning: #fbbf24;
-      --shadow: 0 20px 50px rgba(2, 6, 23, 0.45);
-      --radius: 22px;
-      --radius-sm: 16px;
+      --shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; }
-
     html, body {
       margin: 0;
       padding: 0;
-      background:
-        radial-gradient(circle at top left, rgba(96,165,250,0.15), transparent 30%),
-        radial-gradient(circle at top right, rgba(52,211,153,0.10), transparent 35%),
-        linear-gradient(180deg, #020617 0%, #0b1020 100%);
+      min-height: 100%;
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(96,165,250,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(52,211,153,0.10), transparent 30%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
     }
-
-    a { color: inherit; }
-
-    .shell {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 28px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 20px;
-      margin-bottom: 22px;
-    }
-
-    .hero-card,
-    .panel,
-    .stat,
-    .table-card {
+    body { padding: 28px; }
+    .shell { max-width: 1680px; margin: 0 auto; }
+    .hero,.stats,.charts { display: grid; gap: 18px; }
+    .hero { grid-template-columns: 1.55fr 1fr; margin-bottom: 18px; }
+    .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 18px; }
+    .charts { grid-template-columns: 1.2fr 1fr; margin-bottom: 18px; }
+    .card {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -61,566 +47,261 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
-
     .hero-card {
       padding: 28px;
       position: relative;
       overflow: hidden;
     }
-
     .hero-card::after {
       content: "";
       position: absolute;
-      inset: auto -60px -60px auto;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(96,165,250,0.25), transparent 60%);
+      width: 240px;
+      height: 240px;
+      right: -80px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(96,165,250,0.22), transparent 62%);
       pointer-events: none;
     }
-
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(96,165,250,0.12);
-      border: 1px solid rgba(96,165,250,0.20);
+      border: 1px solid rgba(96,165,250,0.22);
+      background: rgba(96,165,250,0.10);
       color: #c7d2fe;
       font-size: 12px;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
+      letter-spacing: .08em;
       margin-bottom: 18px;
     }
-
     h1 {
       margin: 0 0 10px;
-      font-size: clamp(30px, 4vw, 52px);
+      font-size: clamp(34px, 5vw, 58px);
       line-height: 1.02;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
-
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.65;
-      max-width: 900px;
-    }
-
-    .hero-side {
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .hero-side h3,
-    .panel h3,
-    .table-card h3 {
-      margin: 0 0 6px;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-
-    .muted { color: var(--muted); }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      padding: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat .label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat .value {
-      font-size: clamp(24px, 3vw, 40px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-    }
-
-    .stat .sub {
-      margin-top: 8px;
-      color: #cbd5e1;
-      font-size: 13px;
-    }
-
-    .controls {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1fr auto;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .panel {
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-
-    .input,
-    .select,
-    .button,
-    .file-label {
-      width: 100%;
-      min-height: 48px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      background: rgba(15, 23, 42, 0.78);
-      color: var(--text);
-      padding: 0 14px;
-      outline: none;
-      transition: 180ms ease;
-      font-size: 14px;
-    }
-
-    .input:focus,
-    .select:focus,
-    .button:hover,
-    .file-label:hover {
-      border-color: rgba(96,165,250,0.5);
-      box-shadow: 0 0 0 4px rgba(96,165,250,0.12);
-    }
-
-    .button,
-    .file-label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: 700;
-      background: linear-gradient(135deg, rgba(96,165,250,0.24), rgba(52,211,153,0.18));
-    }
-
-    .button.secondary {
-      background: rgba(15, 23, 42, 0.78);
-      font-weight: 600;
-    }
-
-    .file-input {
-      display: none;
-    }
-
-    .dropzone {
-      border: 1px dashed rgba(148, 163, 184, 0.35);
-      border-radius: 18px;
-      padding: 20px;
-      background: rgba(15, 23, 42, 0.40);
-      text-align: center;
-      transition: 180ms ease;
-    }
-
-    .dropzone.dragover {
-      border-color: rgba(96,165,250,0.8);
-      background: rgba(96,165,250,0.08);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .chart-wrap {
-      width: 100%;
-      min-height: 380px;
-      position: relative;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .chips {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    .chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.12);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      color: #dbeafe;
-      font-size: 12px;
-    }
-
-    .table-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .table-card {
-      padding: 20px;
-      overflow: hidden;
-    }
-
-    .table-container {
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px;
-      background: rgba(2, 6, 23, 0.18);
-    }
-
-    thead {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: rgba(15, 23, 42, 0.96);
-    }
-
-    th, td {
-      padding: 14px 12px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
-      text-align: left;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    th {
-      color: #cbd5e1;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    tbody tr:hover {
-      background: rgba(96,165,250,0.06);
-    }
-
-    .pill {
+    h2,h3 { margin: 0 0 8px; letter-spacing: -0.02em; }
+    .subtitle,.muted,.note { color: var(--muted); }
+    .subtitle { font-size: 16px; line-height: 1.7; max-width: 980px; margin: 0; }
+    .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .chip,.pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 10px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(52,211,153,0.12);
-      color: #d1fae5;
       font-size: 12px;
-      border: 1px solid rgba(52,211,153,0.18);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(148, 163, 184, 0.10);
+      color: #dbeafe;
     }
-
-    .status {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 13px;
+    .pill.good {
+      background: rgba(52,211,153,0.12);
+      border-color: rgba(52,211,153,0.18);
+      color: #d1fae5;
     }
-
-    .legend {
-      display: grid;
-      gap: 10px;
-      margin-top: 14px;
+    .side { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+    .status-line { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+    .stack { display: grid; gap: 12px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .row-5 { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr auto; gap: 12px; }
+    .input,.select,.button,.file-label {
+      width: 100%; min-height: 50px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.80); color: var(--text); padding: 0 14px; outline: none;
+      transition: 180ms ease; font-size: 14px;
     }
-
-    .legend-item {
-      display: grid;
-      grid-template-columns: 12px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      font-size: 14px;
+    .input:focus,.select:focus,.button:hover,.file-label:hover {
+      border-color: rgba(96,165,250,0.46); box-shadow: 0 0 0 4px rgba(96,165,250,0.12);
     }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
+    .button,.file-label {
+      display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700;
+      background: linear-gradient(135deg, rgba(96,165,250,0.22), rgba(52,211,153,0.16)); text-decoration: none;
     }
-
-    .footer-note {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .button.secondary { background: rgba(15, 23, 42, 0.80); font-weight: 600; }
+    .file-input { display: none; }
+    .dropzone {
+      border: 1px dashed rgba(148, 163, 184, 0.34); border-radius: 18px; padding: 20px; text-align: center;
+      background: rgba(15, 23, 42, 0.42); transition: 180ms ease;
     }
-
+    .dropzone.dragover { border-color: rgba(96,165,250,0.8); background: rgba(96,165,250,0.08); }
+    .panel,.stat,.table-card { padding: 20px; }
+    .stat .label { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .stat .value { font-size: clamp(24px, 3vw, 40px); font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .stat .sub { margin-top: 8px; color: #cbd5e1; font-size: 13px; }
+    .chart-wrap { position: relative; min-height: 390px; width: 100%; }
+    canvas { width: 100%; height: 100%; display: block; }
+    .legend { display: grid; gap: 10px; margin-top: 14px; }
+    .legend-item { display: grid; grid-template-columns: 12px 1fr auto; gap: 12px; align-items: center; font-size: 14px; }
+    .dot { width: 12px; height: 12px; border-radius: 999px; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .table-container { overflow: auto; border: 1px solid var(--line); border-radius: 16px; }
+    table { width: 100%; min-width: 960px; border-collapse: collapse; background: rgba(2, 6, 23, 0.16); }
+    thead { position: sticky; top: 0; background: var(--panel-strong); z-index: 2; }
+    th,td { padding: 14px 12px; border-bottom: 1px solid rgba(148, 163, 184, 0.10); text-align: left; white-space: nowrap; font-size: 14px; }
+    th { color: #cbd5e1; font-weight: 700; cursor: pointer; user-select: none; }
+    tbody tr:hover { background: rgba(96,165,250,0.06); }
+    .footer-note { margin-top: 16px; color: var(--muted); font-size: 13px; line-height: 1.6; }
     @media (max-width: 1200px) {
-      .hero,
-      .layout,
-      .grid-4 {
-        grid-template-columns: 1fr 1fr;
-      }
-      .controls {
-        grid-template-columns: 1fr 1fr;
-      }
+      .hero,.charts,.stats { grid-template-columns: 1fr 1fr; }
+      .row-5 { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 860px) {
-      .hero,
-      .layout,
-      .grid-4,
-      .controls {
-        grid-template-columns: 1fr;
-      }
-      .shell { padding: 16px; }
-      .hero-card, .hero-side, .panel, .table-card { padding: 18px; }
-      h1 { font-size: 34px; }
+      body { padding: 16px; }
+      .hero,.charts,.stats,.row-2,.row-5 { grid-template-columns: 1fr; }
+      .hero-card,.side,.panel,.stat,.table-card { padding: 18px; }
+      h1 { font-size: 36px; }
     }
   </style>
 </head>
 <body>
   <div class="shell">
     <section class="hero">
-      <div class="hero-card">
-        <div class="eyebrow">Dashboard standalone • Municipales 2026 • Open data</div>
-        <h1>Résultats électoraux, propres, rapides et lisibles.</h1>
+      <div class="card hero-card">
+        <div class="eyebrow">Standalone HTML • Ministère only • Municipales 2026</div>
+        <h1>Dashboard autonome, propre et vraiment branché sur le portail du ministère.</h1>
         <p class="subtitle">
-          Ce fichier HTML autonome charge un CSV ou un JSON officiel, normalise les colonnes,
-          calcule les indicateurs clés, permet de filtrer par département, commune ou nuance,
-          et affiche un tableau triable ainsi que des graphiques sans dépendance backend.
+          Cette version ne dépend plus de data.gouv pour le mode automatique. Elle vise d’abord les pages du ministère,
+          tente un fetch automatique, parse les tableaux quand une page de département ou de commune est fournie,
+          et garde l’import local comme secours.
         </p>
         <div class="chips">
           <span class="chip">Single-file HTML</span>
-          <span class="chip">Import CSV / JSON</span>
-          <span class="chip">Encodage ISO-8859-1 / UTF-8</span>
-          <span class="chip">Filtres + recherche</span>
-          <span class="chip">Tableau exportable JSON</span>
+          <span class="chip">Ministère uniquement</span>
+          <span class="chip">Auto fetch</span>
+          <span class="chip">Parser HTML résultats</span>
+          <span class="chip">Import local en secours</span>
         </div>
       </div>
-      <div class="hero-side hero-card">
+
+      <div class="card side">
         <h3>Chargement des données</h3>
-        <div class="status">
-          <span class="pill">Prêt</span>
+        <div class="status-line">
+          <span class="pill good">Prêt</span>
           <span id="statusText">Aucune donnée chargée</span>
         </div>
-        <div style="display:grid; gap:12px; margin-top:10px;">
-          <input id="urlInput" class="input" type="text" placeholder="Colle ici l’URL d’un CSV / JSON officiel" />
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <button id="loadUrlBtn" class="button">Charger depuis URL</button>
-            <label class="file-label" for="fileInput">Importer un fichier</label>
+
+        <div class="stack">
+          <input id="urlInput" class="input" type="text" placeholder="Colle une URL résultats du ministère : commune ou département" />
+          <div class="row-2">
+            <button id="loadUrlBtn" class="button">Charger URL ministère</button>
+            <button id="autoFetchBtn" class="button">Fetch ministère auto</button>
           </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <button id="autoFetchBtn" class="button">Fetch officiel auto</button>
+          <div class="row-2">
+            <label class="file-label" for="fileInput">Importer un fichier</label>
             <button id="loadDemoBtn" class="button secondary">Recharger démo</button>
           </div>
-          <input id="fileInput" class="file-input" type="file" accept=".csv,.txt,.json" />
+          <input id="fileInput" class="file-input" type="file" accept=".csv,.txt,.json,.html,.htm" />
           <div id="dropzone" class="dropzone">
-            Glisse-dépose ici un fichier officiel (.csv, .txt, .json)
-            <div class="footer-note">Compatible avec séparateur ; ou , et colonnes dynamiques par candidat.</div>
+            Glisse-dépose un fichier HTML, CSV, TXT ou JSON.
+            <div class="footer-note">Le mode local est utile quand le navigateur bloque le cross-origin du site officiel.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="grid-4">
-      <div class="stat">
-        <div class="label">Inscrits</div>
-        <div class="value" id="statInscrits">—</div>
-        <div class="sub" id="subInscrits">Total agrégé</div>
-      </div>
-      <div class="stat">
-        <div class="label">Votants</div>
-        <div class="value" id="statVotants">—</div>
-        <div class="sub" id="subVotants">Participation agrégée</div>
-      </div>
-      <div class="stat">
-        <div class="label">Participation</div>
-        <div class="value" id="statParticipation">—</div>
-        <div class="sub">Calculée sur les lignes filtrées</div>
-      </div>
-      <div class="stat">
-        <div class="label">Communes</div>
-        <div class="value" id="statCommunes">—</div>
-        <div class="sub">Nombre de lignes / communes visibles</div>
-      </div>
+    <section class="stats">
+      <div class="card stat"><div class="label">Inscrits</div><div class="value" id="statInscrits">—</div><div class="sub" id="subInscrits">Total agrégé</div></div>
+      <div class="card stat"><div class="label">Votants</div><div class="value" id="statVotants">—</div><div class="sub" id="subVotants">Participation agrégée</div></div>
+      <div class="card stat"><div class="label">Participation</div><div class="value" id="statParticipation">—</div><div class="sub">Calculée sur les lignes visibles</div></div>
+      <div class="card stat"><div class="label">Lignes / communes</div><div class="value" id="statCommunes">—</div><div class="sub">Nombre visible après filtres</div></div>
     </section>
 
-    <section class="panel">
-      <div class="table-toolbar">
+    <section class="card panel">
+      <div class="toolbar">
         <div>
           <h3>Filtres intelligents</h3>
-          <div class="muted">Le moteur détecte automatiquement les colonnes proches de département, commune, inscrits, votants, blancs, nuls et exprimés.</div>
+          <div class="muted">Détection automatique des colonnes proches de département, commune, inscrits, votants, blancs, nuls et exprimés.</div>
         </div>
-        <button id="resetBtn" class="button secondary" style="width:auto; padding:0 16px;">Réinitialiser</button>
+        <button id="resetBtn" class="button secondary" style="width:auto;padding:0 16px;">Réinitialiser</button>
       </div>
-      <div class="controls">
-        <input id="searchInput" class="input" type="text" placeholder="Rechercher une commune, un département, une nuance…" />
+      <div class="row-5">
+        <input id="searchInput" class="input" type="text" placeholder="Rechercher une commune, un département, un candidat…" />
         <select id="deptFilter" class="select"><option value="">Tous les départements</option></select>
         <select id="communeFilter" class="select"><option value="">Toutes les communes</option></select>
-        <select id="topNSelect" class="select">
-          <option value="10">Top 10</option>
-          <option value="20">Top 20</option>
-          <option value="30">Top 30</option>
-          <option value="50">Top 50</option>
-        </select>
+        <select id="topNSelect" class="select"><option value="10">Top 10</option><option value="20">Top 20</option><option value="30">Top 30</option><option value="50">Top 50</option></select>
         <button id="exportJsonBtn" class="button">Exporter JSON</button>
       </div>
     </section>
 
-    <section class="layout">
-      <div class="panel">
-        <h3>Top communes par exprimés</h3>
-        <div class="muted">Comparaison visuelle sur l’ensemble filtré.</div>
+    <section class="charts">
+      <div class="card panel">
+        <h3>Top lignes par exprimés</h3>
+        <div class="muted">Visualisation des résultats les plus élevés sur l’ensemble filtré.</div>
         <div class="chart-wrap"><canvas id="barChart"></canvas></div>
       </div>
-      <div class="panel">
-        <h3>Répartition votes / blancs / nuls</h3>
+      <div class="card panel">
+        <h3>Répartition exprimés / blancs / nuls</h3>
         <div class="muted">Agrégation des principales masses électorales visibles.</div>
         <div class="chart-wrap"><canvas id="donutChart"></canvas></div>
         <div id="legend" class="legend"></div>
       </div>
     </section>
 
-    <section class="table-card">
-      <div class="table-toolbar">
+    <section class="card table-card">
+      <div class="toolbar">
         <div>
           <h3>Données détaillées</h3>
-          <div class="muted">Clique sur les entêtes pour trier. Les colonnes détectées en priorité sont affichées en premier.</div>
+          <div class="muted">Clique sur les en-têtes pour trier. Les colonnes prioritaires remontent automatiquement.</div>
         </div>
-        <div class="status">
-          <span id="rowCount">0 ligne</span>
-        </div>
+        <div class="status-line"><span id="rowCount">0 ligne</span></div>
       </div>
-      <div class="table-container">
-        <table id="dataTable">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+      <div class="table-container"><table id="dataTable"><thead></thead><tbody></tbody></table></div>
       <div class="footer-note" id="mappingNote"></div>
     </section>
   </div>
 
   <script>
-    const state = {
-      rawRows: [],
-      filteredRows: [],
-      columns: [],
-      sortKey: null,
-      sortDir: 'desc',
-      mapping: {},
-      palette: ['#60a5fa', '#34d399', '#fbbf24', '#fb7185', '#a78bfa', '#22d3ee', '#f97316', '#10b981', '#e879f9', '#f43f5e']
-    };
-
+    const state = { rawRows: [], filteredRows: [], columns: [], sortKey: null, sortDir: 'desc', mapping: {} };
     const refs = {
-      fileInput: document.getElementById('fileInput'),
-      urlInput: document.getElementById('urlInput'),
-      loadUrlBtn: document.getElementById('loadUrlBtn'),
-      autoFetchBtn: document.getElementById('autoFetchBtn'),
-      loadDemoBtn: document.getElementById('loadDemoBtn'),
-      dropzone: document.getElementById('dropzone'),
-      searchInput: document.getElementById('searchInput'),
-      deptFilter: document.getElementById('deptFilter'),
-      communeFilter: document.getElementById('communeFilter'),
-      topNSelect: document.getElementById('topNSelect'),
-      exportJsonBtn: document.getElementById('exportJsonBtn'),
-      resetBtn: document.getElementById('resetBtn'),
-      table: document.getElementById('dataTable'),
-      thead: document.querySelector('#dataTable thead'),
-      tbody: document.querySelector('#dataTable tbody'),
-      statusText: document.getElementById('statusText'),
-      rowCount: document.getElementById('rowCount'),
-      mappingNote: document.getElementById('mappingNote'),
-      statInscrits: document.getElementById('statInscrits'),
-      statVotants: document.getElementById('statVotants'),
-      statParticipation: document.getElementById('statParticipation'),
-      statCommunes: document.getElementById('statCommunes'),
-      subInscrits: document.getElementById('subInscrits'),
-      subVotants: document.getElementById('subVotants'),
-      legend: document.getElementById('legend'),
-      barCanvas: document.getElementById('barChart'),
-      donutCanvas: document.getElementById('donutChart')
+      fileInput: document.getElementById('fileInput'), urlInput: document.getElementById('urlInput'),
+      loadUrlBtn: document.getElementById('loadUrlBtn'), autoFetchBtn: document.getElementById('autoFetchBtn'),
+      loadDemoBtn: document.getElementById('loadDemoBtn'), dropzone: document.getElementById('dropzone'),
+      searchInput: document.getElementById('searchInput'), deptFilter: document.getElementById('deptFilter'),
+      communeFilter: document.getElementById('communeFilter'), topNSelect: document.getElementById('topNSelect'),
+      exportJsonBtn: document.getElementById('exportJsonBtn'), resetBtn: document.getElementById('resetBtn'),
+      thead: document.querySelector('#dataTable thead'), tbody: document.querySelector('#dataTable tbody'),
+      statusText: document.getElementById('statusText'), rowCount: document.getElementById('rowCount'),
+      mappingNote: document.getElementById('mappingNote'), statInscrits: document.getElementById('statInscrits'),
+      statVotants: document.getElementById('statVotants'), statParticipation: document.getElementById('statParticipation'),
+      statCommunes: document.getElementById('statCommunes'), subInscrits: document.getElementById('subInscrits'),
+      subVotants: document.getElementById('subVotants'), legend: document.getElementById('legend'),
+      barCanvas: document.getElementById('barChart'), donutCanvas: document.getElementById('donutChart')
     };
 
     function normalizeName(str) {
-      return String(str || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '_')
-        .replace(/^_+|_+$/g, '');
+      return String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
     }
-
     function smartNumber(value) {
       if (value == null) return 0;
-      const cleaned = String(value)
-        .replace(/\u00A0/g, ' ')
-        .replace(/\s+/g, '')
-        .replace(/%/g, '')
-        .replace(/,/g, '.')
-        .replace(/[^0-9.-]/g, '');
+      const cleaned = String(value).replace(/\u00A0/g, ' ').replace(/\s+/g, '').replace(/%/g, '').replace(/,/g, '.').replace(/[^0-9.-]/g, '');
       const num = Number(cleaned);
       return Number.isFinite(num) ? num : 0;
     }
-
-    function prettyInt(value) {
-      return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(value || 0);
-    }
-
-    function prettyPct(value) {
-      return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value || 0) + ' %';
-    }
-
+    function prettyInt(value) { return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(value || 0); }
+    function prettyPct(value) { return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value || 0) + ' %'; }
+    function setStatus(text) { refs.statusText.textContent = text; }
     function guessDelimiter(text) {
       const sample = text.slice(0, 4000);
-      const counts = {
-        ';': (sample.match(/;/g) || []).length,
-        ',': (sample.match(/,/g) || []).length,
-        '\t': (sample.match(/\t/g) || []).length,
-        '|': (sample.match(/\|/g) || []).length
-      };
+      const counts = { ';': (sample.match(/;/g) || []).length, ',': (sample.match(/,/g) || []).length, '\t': (sample.match(/\t/g) || []).length, '|': (sample.match(/\|/g) || []).length };
       return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0] || ';';
     }
-
     function parseCSV(text) {
       const delimiter = guessDelimiter(text);
       const lines = text.replace(/\r/g, '').split('\n').filter(Boolean);
       if (!lines.length) return [];
-
       const parseLine = (line) => {
-        const out = [];
-        let cur = '';
-        let inQuotes = false;
+        const out = []; let cur = ''; let inQuotes = false;
         for (let i = 0; i < line.length; i++) {
-          const ch = line[i];
-          const next = line[i + 1];
+          const ch = line[i]; const next = line[i + 1];
           if (ch === '"') {
-            if (inQuotes && next === '"') {
-              cur += '"';
-              i++;
-            } else {
-              inQuotes = !inQuotes;
-            }
-          } else if (ch === delimiter && !inQuotes) {
-            out.push(cur);
-            cur = '';
-          } else {
-            cur += ch;
-          }
+            if (inQuotes && next === '"') { cur += '"'; i++; } else { inQuotes = !inQuotes; }
+          } else if (ch === delimiter && !inQuotes) { out.push(cur); cur = ''; } else { cur += ch; }
         }
         out.push(cur);
         return out.map(v => v.trim());
       };
-
       const headers = parseLine(lines[0]);
       const rows = [];
       for (let i = 1; i < lines.length; i++) {
@@ -632,32 +313,49 @@
       }
       return rows;
     }
-
+    function parseHtmlTables(htmlText) {
+      const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+      const tables = [...doc.querySelectorAll('table')];
+      if (!tables.length) return [];
+      let bestRows = []; let bestScore = -1;
+      for (const table of tables) {
+        const trs = [...table.querySelectorAll('tr')];
+        if (trs.length < 2) continue;
+        let headerRowIndex = trs.findIndex(tr => tr.querySelectorAll('th').length >= 2);
+        if (headerRowIndex < 0) headerRowIndex = 0;
+        const headers = [...trs[headerRowIndex].querySelectorAll('th,td')].map(c => c.textContent.replace(/\s+/g, ' ').trim());
+        if (!headers.length) continue;
+        const rows = [];
+        for (let i = headerRowIndex + 1; i < trs.length; i++) {
+          const cells = [...trs[i].querySelectorAll('th,td')].map(c => c.textContent.replace(/\s+/g, ' ').trim());
+          if (!cells.length || cells.every(v => !v)) continue;
+          const row = {};
+          headers.forEach((h, idx) => { row[h || `col_${idx + 1}`] = cells[idx] ?? ''; });
+          rows.push(row);
+        }
+        const joined = normalizeName(headers.join(' '));
+        let score = rows.length;
+        if (joined.includes('inscr')) score += 40;
+        if (joined.includes('vot')) score += 40;
+        if (joined.includes('expr')) score += 40;
+        if (joined.includes('blanc')) score += 25;
+        if (joined.includes('nul')) score += 25;
+        if (joined.includes('liste') || joined.includes('candidat')) score += 10;
+        if (score > bestScore) { bestScore = score; bestRows = rows; }
+      }
+      return bestRows;
+    }
     function detectMapping(columns) {
       const norms = columns.map(c => ({ raw: c, norm: normalizeName(c) }));
-      const find = (patterns) => {
-        for (const p of patterns) {
-          const hit = norms.find(c => c.norm.includes(p));
-          if (hit) return hit.raw;
-        }
-        return null;
-      };
-
-      const mapping = {
+      const find = (patterns) => { for (const p of patterns) { const hit = norms.find(c => c.norm.includes(p)); if (hit) return hit.raw; } return null; };
+      return {
         codeDepartement: find(['code_departement', 'departement_code', 'code_dep', 'dep']),
         departement: find(['libelle_departement', 'nom_departement', 'departement']),
-        codeCommune: find(['code_commune', 'com', 'codgeo']),
-        commune: find(['libelle_commune', 'nom_commune', 'commune']),
-        inscrits: find(['inscrits', 'i']),
-        votants: find(['votants', 'v']),
-        blancs: find(['blancs', 'bl']),
-        nuls: find(['nuls', 'nu']),
-        exprimes: find(['exprimes', 'exprimes', 'e'])
+        codeCommune: find(['code_commune', 'code_insee', 'codgeo', 'com']),
+        commune: find(['libelle_commune', 'nom_commune', 'commune', 'ville']),
+        inscrits: find(['inscrits', 'i']), votants: find(['votants', 'v']), blancs: find(['blancs', 'bl']), nuls: find(['nuls', 'nu']), exprimes: find(['exprimes', 'exprim', 'e'])
       };
-
-      return mapping;
     }
-
     function transformRows(rows) {
       if (!rows.length) return { rows: [], columns: [], mapping: {} };
       const columns = Object.keys(rows[0]);
@@ -677,92 +375,147 @@
       });
       return { rows: normalized, columns, mapping };
     }
-
-    function setStatus(text) {
-      refs.statusText.textContent = text;
+    function extractMetaFromMinisterePage(htmlText, url) {
+      const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+      const h1 = doc.querySelector('h1');
+      const pageTitle = (h1?.textContent || doc.title || '').replace(/\s+/g, ' ').trim();
+      const depMatch = url.match(/ensemble_geographique\/(\d{2})\/(\d{2,3}[A-B]?)/i);
+      const communeMatch = url.match(/ensemble_geographique\/\d{2}\/(\d{2,3}[A-B]?)\/(\d{5})/i);
+      return { pageTitle, depCode: depMatch ? depMatch[2] : '', communeCode: communeMatch ? communeMatch[2] : '' };
     }
-
+    function parseMinistereResultsPage(htmlText, sourceUrl) {
+      const meta = extractMetaFromMinisterePage(htmlText, sourceUrl);
+      const tableRows = parseHtmlTables(htmlText);
+      if (!tableRows.length) throw new Error('Aucun tableau exploitable trouvé sur la page du ministère');
+      return tableRows.map((row, idx) => ({
+        departement: row['Département'] || row['Departement'] || row['Code département'] || row['Code departement'] || meta.depCode || '',
+        commune: row['Commune'] || row['Libellé de la commune'] || row['Libelle de la commune'] || row['Ville'] || meta.pageTitle || `Ligne ${idx + 1}`,
+        inscrits: row['Inscrits'] || row['I.'] || row['I'] || '',
+        votants: row['Votants'] || row['V.'] || row['V'] || '',
+        blancs: row['Blancs'] || row['B.'] || row['Bl.'] || '',
+        nuls: row['Nuls'] || row['N.'] || '',
+        exprimes: row['Exprimés'] || row['Exprimes'] || row['E.'] || row['E'] || '',
+        ...row
+      }));
+    }
+    async function readFileSmart(file) {
+      const buf = await file.arrayBuffer();
+      let text = null;
+      try { text = new TextDecoder('utf-8', { fatal: false }).decode(buf); } catch (_) {}
+      if (!text || text.includes('�')) { try { text = new TextDecoder('iso-8859-1').decode(buf); } catch (_) {} }
+      return text || '';
+    }
+    async function loadRows(rows, sourceLabel = 'source inconnue') {
+      if (!Array.isArray(rows) || !rows.length) throw new Error('Aucune ligne exploitable détectée');
+      const transformed = transformRows(rows);
+      state.rawRows = transformed.rows;
+      state.filteredRows = transformed.rows;
+      state.columns = transformed.columns;
+      state.mapping = transformed.mapping;
+      state.sortKey = transformed.mapping.exprimes || transformed.mapping.votants || transformed.columns[0];
+      state.sortDir = 'desc';
+      updateFilters();
+      applyFilters();
+      setStatus(`Données chargées : ${sourceLabel} • ${prettyInt(state.rawRows.length)} lignes`);
+    }
+    async function loadFromText(text, sourceLabel = 'source inconnue') {
+      const trimmed = String(text || '').trim();
+      if (!trimmed) throw new Error('Fichier vide');
+      let rows;
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        const json = JSON.parse(trimmed);
+        rows = Array.isArray(json) ? json : (json.data || json.results || []);
+      } else if (trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html') || trimmed.includes('<table')) {
+        rows = parseMinistereResultsPage(trimmed, sourceLabel);
+      } else {
+        rows = parseCSV(trimmed);
+      }
+      await loadRows(rows, sourceLabel);
+    }
+    async function getMinistereDefaultUrl() { return 'https://www.resultats-elections.interieur.gouv.fr/municipales2026/index.html'; }
+    async function fetchText(url) { const res = await fetch(url); if (!res.ok) throw new Error(`HTTP ${res.status}`); return await res.text(); }
+    async function loadMinistereUrl(url) {
+      const cleanUrl = String(url || '').trim();
+      if (!cleanUrl) throw new Error('URL vide');
+      if (!/resultats-elections\.interieur\.gouv\.fr|elections\.interieur\.gouv\.fr/i.test(cleanUrl)) throw new Error('Cette version n’accepte que les URLs du ministère');
+      setStatus('Chargement depuis l’URL du ministère…');
+      const html = await fetchText(cleanUrl);
+      if (cleanUrl.includes('/ensemble_geographique/')) {
+        const rows = parseMinistereResultsPage(html, cleanUrl);
+        await loadRows(rows, cleanUrl);
+        return;
+      }
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const links = [...doc.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(Boolean).map(href => new URL(href, cleanUrl).href).filter(href => href.includes('/municipales2026/ensemble_geographique/'));
+      const uniqueLinks = [...new Set(links)];
+      if (!uniqueLinks.length) throw new Error('La page fournie ne contient pas directement de lien résultats exploitable. Colle une URL commune ou département du ministère.');
+      const first = uniqueLinks[0];
+      refs.urlInput.value = first;
+      setStatus(`Première page résultats détectée : ${first}`);
+      const pageHtml = await fetchText(first);
+      const rows = parseMinistereResultsPage(pageHtml, first);
+      await loadRows(rows, first);
+    }
+    async function autoFetchOfficial() {
+      const targetUrl = refs.urlInput.value.trim() || await getMinistereDefaultUrl();
+      refs.urlInput.value = targetUrl;
+      setStatus('Fetch automatique depuis le portail du ministère…');
+      try { await loadMinistereUrl(targetUrl); }
+      catch (err) { setStatus(`Erreur ministère : ${err.message}. Si le navigateur bloque la lecture du site officiel, importe la page HTML enregistrée localement.`); }
+    }
     function updateFilters() {
       const deptValues = [...new Set(state.rawRows.map(r => r.__departement).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
       const communeValues = [...new Set(state.rawRows.map(r => r.__commune).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
-
       refs.deptFilter.innerHTML = '<option value="">Tous les départements</option>' + deptValues.map(v => `<option>${escapeHtml(v)}</option>`).join('');
       refs.communeFilter.innerHTML = '<option value="">Toutes les communes</option>' + communeValues.map(v => `<option>${escapeHtml(v)}</option>`).join('');
     }
-
+    function compareValues(a, b, dir) {
+      const av = typeof a === 'number' ? a : smartNumber(a);
+      const bv = typeof b === 'number' ? b : smartNumber(b);
+      if (Number.isFinite(av) && Number.isFinite(bv) && (av !== 0 || bv !== 0)) return dir === 'asc' ? av - bv : bv - av;
+      return dir === 'asc' ? String(a ?? '').localeCompare(String(b ?? ''), 'fr') : String(b ?? '').localeCompare(String(a ?? ''), 'fr');
+    }
     function applyFilters() {
       const q = refs.searchInput.value.trim().toLowerCase();
       const dept = refs.deptFilter.value;
       const commune = refs.communeFilter.value;
-
       let rows = state.rawRows.filter(r => {
         const matchesSearch = !q || Object.values(r).some(v => String(v ?? '').toLowerCase().includes(q));
         const matchesDept = !dept || r.__departement === dept;
         const matchesCommune = !commune || r.__commune === commune;
         return matchesSearch && matchesDept && matchesCommune;
       });
-
-      if (state.sortKey) {
-        rows.sort((a, b) => compareValues(a[state.sortKey], b[state.sortKey], state.sortDir));
-      }
-
+      if (state.sortKey) rows.sort((a, b) => compareValues(a[state.sortKey], b[state.sortKey], state.sortDir));
       state.filteredRows = rows;
       renderAll();
     }
-
-    function compareValues(a, b, dir) {
-      const av = typeof a === 'number' ? a : smartNumber(a);
-      const bv = typeof b === 'number' ? b : smartNumber(b);
-      if (Number.isFinite(av) && Number.isFinite(bv) && (av !== 0 || bv !== 0)) {
-        return dir === 'asc' ? av - bv : bv - av;
-      }
-      return dir === 'asc'
-        ? String(a ?? '').localeCompare(String(b ?? ''), 'fr')
-        : String(b ?? '').localeCompare(String(a ?? ''), 'fr');
-    }
-
     function orderedColumns() {
-      const priority = [
-        state.mapping.departement,
-        state.mapping.codeDepartement,
-        state.mapping.commune,
-        state.mapping.codeCommune,
-        state.mapping.inscrits,
-        state.mapping.votants,
-        state.mapping.blancs,
-        state.mapping.nuls,
-        state.mapping.exprimes
-      ].filter(Boolean);
-
+      const priority = [state.mapping.departement, state.mapping.codeDepartement, state.mapping.commune, state.mapping.codeCommune, state.mapping.inscrits, state.mapping.votants, state.mapping.blancs, state.mapping.nuls, state.mapping.exprimes].filter(Boolean);
       const rest = state.columns.filter(c => !priority.includes(c));
       return [...priority, ...rest];
     }
-
+    function formatCell(value) {
+      if (value == null || value === '') return '<span class="muted">—</span>';
+      if (typeof value === 'number') return prettyInt(value);
+      const s = String(value); const n = smartNumber(s);
+      if (/^[-+]?\d[\d\s.,%]*$/.test(s) && n !== 0) return prettyInt(n);
+      return escapeHtml(s);
+    }
     function renderTable() {
       const cols = orderedColumns();
       refs.thead.innerHTML = `<tr>${cols.map(c => `<th data-key="${escapeAttr(c)}">${escapeHtml(c)}${state.sortKey === c ? (state.sortDir === 'asc' ? ' ▲' : ' ▼') : ''}</th>`).join('')}</tr>`;
-
       const visible = state.filteredRows.slice(0, 1000);
-      refs.tbody.innerHTML = visible.map(row => {
-        return `<tr>${cols.map(c => `<td>${formatCell(row[c])}</td>`).join('')}</tr>`;
-      }).join('');
-
+      refs.tbody.innerHTML = visible.map(row => `<tr>${cols.map(c => `<td>${formatCell(row[c])}</td>`).join('')}</tr>`).join('');
       refs.rowCount.textContent = `${prettyInt(state.filteredRows.length)} ligne${state.filteredRows.length > 1 ? 's' : ''}`;
-
       refs.thead.querySelectorAll('th').forEach(th => {
         th.addEventListener('click', () => {
           const key = th.dataset.key;
-          if (state.sortKey === key) {
-            state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
-          } else {
-            state.sortKey = key;
-            state.sortDir = 'desc';
-          }
+          if (state.sortKey === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+          else { state.sortKey = key; state.sortDir = 'desc'; }
           applyFilters();
         });
       });
     }
-
     function renderStats() {
       const rows = state.filteredRows;
       const inscrits = rows.reduce((s, r) => s + r.__inscrits, 0);
@@ -771,7 +524,6 @@
       const nuls = rows.reduce((s, r) => s + r.__nuls, 0);
       const exprimes = rows.reduce((s, r) => s + r.__exprimes, 0);
       const participation = inscrits ? (votants / inscrits) * 100 : 0;
-
       refs.statInscrits.textContent = prettyInt(inscrits);
       refs.statVotants.textContent = prettyInt(votants);
       refs.statParticipation.textContent = prettyPct(participation);
@@ -779,363 +531,78 @@
       refs.subInscrits.textContent = `Exprimés : ${prettyInt(exprimes)}`;
       refs.subVotants.textContent = `Blancs : ${prettyInt(blancs)} • Nuls : ${prettyInt(nuls)}`;
     }
-
+    function renderMapping() {
+      const entries = Object.entries(state.mapping).filter(([, v]) => v);
+      if (!entries.length) { refs.mappingNote.textContent = 'Aucune correspondance métier détectée automatiquement dans les colonnes.'; return; }
+      refs.mappingNote.innerHTML = 'Colonnes détectées : ' + entries.map(([k, v]) => `<strong>${escapeHtml(k)}</strong> → ${escapeHtml(v)}`).join(' • ');
+    }
     function drawBarChart() {
-      const canvas = refs.barCanvas;
-      const ctx = canvas.getContext('2d');
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = Math.max(380, rect.height || 380) * dpr;
-      ctx.scale(dpr, dpr);
-      ctx.clearRect(0, 0, rect.width, rect.height);
-
-      const topN = Number(refs.topNSelect.value || 10);
-      const items = [...state.filteredRows]
-        .sort((a, b) => b.__exprimes - a.__exprimes)
-        .slice(0, topN);
-
-      const pad = { top: 24, right: 20, bottom: 56, left: 64 };
-      const w = rect.width;
-      const h = Math.max(380, rect.height || 380);
-      const innerW = w - pad.left - pad.right;
-      const innerH = h - pad.top - pad.bottom;
-      const maxVal = Math.max(...items.map(i => i.__exprimes), 1);
-      const barGap = 12;
-      const barWidth = items.length ? (innerW - barGap * (items.length - 1)) / items.length : innerW;
-
-      ctx.strokeStyle = 'rgba(148,163,184,0.18)';
-      ctx.lineWidth = 1;
-      ctx.font = '12px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(148,163,184,0.9)';
-
+      const canvas = refs.barCanvas; const ctx = canvas.getContext('2d'); const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = Math.max(390, rect.height || 390) * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, rect.width, rect.height);
+      const topN = Number(refs.topNSelect.value || 10); const items = [...state.filteredRows].sort((a, b) => b.__exprimes - a.__exprimes).slice(0, topN);
+      const pad = { top: 24, right: 20, bottom: 64, left: 68 }; const w = rect.width; const h = Math.max(390, rect.height || 390);
+      const innerW = w - pad.left - pad.right; const innerH = h - pad.top - pad.bottom; const maxVal = Math.max(...items.map(i => i.__exprimes), 1);
+      const gap = 12; const barWidth = items.length ? (innerW - gap * (items.length - 1)) / items.length : innerW;
+      ctx.strokeStyle = 'rgba(148,163,184,0.18)'; ctx.lineWidth = 1; ctx.font = '12px Inter, sans-serif'; ctx.fillStyle = 'rgba(148,163,184,0.9)'; ctx.textAlign = 'left';
       for (let i = 0; i <= 4; i++) {
-        const y = pad.top + (innerH / 4) * i;
-        ctx.beginPath();
-        ctx.moveTo(pad.left, y);
-        ctx.lineTo(w - pad.right, y);
-        ctx.stroke();
-
-        const val = Math.round(maxVal - (maxVal / 4) * i);
-        ctx.fillText(prettyInt(val), 8, y + 4);
+        const y = pad.top + (innerH / 4) * i; ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+        const val = Math.round(maxVal - (maxVal / 4) * i); ctx.fillText(prettyInt(val), 8, y + 4);
       }
-
       items.forEach((item, index) => {
-        const x = pad.left + index * (barWidth + barGap);
-        const bh = innerH * (item.__exprimes / maxVal);
-        const y = pad.top + innerH - bh;
-
-        const grad = ctx.createLinearGradient(0, y, 0, y + bh);
-        grad.addColorStop(0, 'rgba(96,165,250,0.95)');
-        grad.addColorStop(1, 'rgba(52,211,153,0.85)');
-        ctx.fillStyle = grad;
-        roundRect(ctx, x, y, barWidth, bh, 10, true, false);
-
-        ctx.fillStyle = '#e2e8f0';
-        ctx.textAlign = 'center';
+        const x = pad.left + index * (barWidth + gap); const bh = innerH * (item.__exprimes / maxVal); const y = pad.top + innerH - bh;
+        const grad = ctx.createLinearGradient(0, y, 0, y + bh); grad.addColorStop(0, 'rgba(96,165,250,0.96)'); grad.addColorStop(1, 'rgba(52,211,153,0.82)');
+        ctx.fillStyle = grad; roundRect(ctx, x, y, barWidth, bh, 10, true, false); ctx.fillStyle = '#e2e8f0'; ctx.textAlign = 'center';
         ctx.fillText(prettyInt(item.__exprimes), x + barWidth / 2, y - 8);
-
-        ctx.save();
-        ctx.translate(x + barWidth / 2, h - 16);
-        ctx.rotate(-0.45);
-        ctx.fillStyle = 'rgba(203,213,225,0.92)';
-        ctx.fillText(String(item.__commune).slice(0, 22), 0, 0);
-        ctx.restore();
+        ctx.save(); ctx.translate(x + barWidth / 2, h - 16); ctx.rotate(-0.45); ctx.fillStyle = 'rgba(203,213,225,0.94)'; ctx.fillText(String(item.__commune).slice(0, 26), 0, 0); ctx.restore();
       });
     }
-
     function drawDonutChart() {
-      const canvas = refs.donutCanvas;
-      const ctx = canvas.getContext('2d');
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = Math.max(340, rect.height || 340) * dpr;
-      ctx.scale(dpr, dpr);
-      ctx.clearRect(0, 0, rect.width, rect.height);
-
+      const canvas = refs.donutCanvas; const ctx = canvas.getContext('2d'); const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = Math.max(340, rect.height || 340) * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, rect.width, rect.height);
       const rows = state.filteredRows;
       const data = [
         { label: 'Exprimés', value: rows.reduce((s, r) => s + r.__exprimes, 0), color: '#60a5fa' },
         { label: 'Blancs', value: rows.reduce((s, r) => s + r.__blancs, 0), color: '#fbbf24' },
         { label: 'Nuls', value: rows.reduce((s, r) => s + r.__nuls, 0), color: '#fb7185' }
       ].filter(d => d.value > 0);
-
-      const total = data.reduce((s, d) => s + d.value, 0) || 1;
-      const cx = rect.width / 2;
-      const cy = Math.max(340, rect.height || 340) / 2;
-      const radius = Math.min(rect.width, Math.max(340, rect.height || 340)) * 0.28;
-      const lineWidth = radius * 0.42;
-      let start = -Math.PI / 2;
-
-      data.forEach(d => {
-        const angle = (d.value / total) * Math.PI * 2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, start, start + angle);
-        ctx.strokeStyle = d.color;
-        ctx.lineWidth = lineWidth;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-        start += angle;
-      });
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius - lineWidth / 2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(15,23,42,0.88)';
-      ctx.fill();
-
-      ctx.fillStyle = '#eef2ff';
-      ctx.textAlign = 'center';
-      ctx.font = '700 15px Inter, sans-serif';
-      ctx.fillText('Votes visibles', cx, cy - 10);
-      ctx.font = '800 28px Inter, sans-serif';
-      ctx.fillText(prettyInt(total), cx, cy + 22);
-
-      refs.legend.innerHTML = data.map(d => {
-        const pct = (d.value / total) * 100;
-        return `
-          <div class="legend-item">
-            <span class="dot" style="background:${d.color}"></span>
-            <span>${escapeHtml(d.label)}</span>
-            <strong>${prettyInt(d.value)} • ${prettyPct(pct)}</strong>
-          </div>`;
-      }).join('');
+      const total = data.reduce((s, d) => s + d.value, 0) || 1; const w = rect.width; const h = Math.max(340, rect.height || 340);
+      const cx = w / 2; const cy = h / 2; const radius = Math.min(w, h) * 0.28; const lineWidth = radius * 0.42; let start = -Math.PI / 2;
+      data.forEach(d => { const angle = (d.value / total) * Math.PI * 2; ctx.beginPath(); ctx.arc(cx, cy, radius, start, start + angle); ctx.strokeStyle = d.color; ctx.lineWidth = lineWidth; ctx.lineCap = 'round'; ctx.stroke(); start += angle; });
+      ctx.beginPath(); ctx.arc(cx, cy, radius - lineWidth / 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(15,23,42,0.88)'; ctx.fill();
+      ctx.fillStyle = '#eef2ff'; ctx.textAlign = 'center'; ctx.font = '700 15px Inter, sans-serif'; ctx.fillText('Votes visibles', cx, cy - 10); ctx.font = '800 28px Inter, sans-serif'; ctx.fillText(prettyInt(total), cx, cy + 22);
+      refs.legend.innerHTML = data.map(d => { const pct = (d.value / total) * 100; return `<div class="legend-item"><span class="dot" style="background:${d.color}"></span><span>${escapeHtml(d.label)}</span><strong>${prettyInt(d.value)} • ${prettyPct(pct)}</strong></div>`; }).join('');
     }
-
-    function renderMapping() {
-      const entries = Object.entries(state.mapping).filter(([, v]) => v);
-      if (!entries.length) {
-        refs.mappingNote.textContent = 'Aucune correspondance métier détectée automatiquement dans les colonnes.';
-        return;
-      }
-      refs.mappingNote.innerHTML = 'Colonnes détectées : ' + entries.map(([k, v]) => `<strong>${escapeHtml(k)}</strong> → ${escapeHtml(v)}`).join(' • ');
-    }
-
-    function renderAll() {
-      renderStats();
-      renderTable();
-      drawBarChart();
-      drawDonutChart();
-      renderMapping();
-    }
-
-    async function readFileSmart(file) {
-      const buf = await file.arrayBuffer();
-      let text = null;
-      try {
-        text = new TextDecoder('utf-8', { fatal: false }).decode(buf);
-      } catch (_) {}
-      if (!text || text.includes('�')) {
-        try {
-          text = new TextDecoder('iso-8859-1').decode(buf);
-        } catch (_) {}
-      }
-      return text || '';
-    }
-
-    async function loadFromText(text, sourceLabel = 'source inconnue') {
-      let rows;
-      const trimmed = text.trim();
-      if (!trimmed) throw new Error('Fichier vide');
-
-      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-        const json = JSON.parse(trimmed);
-        rows = Array.isArray(json) ? json : (json.data || json.results || []);
-      } else {
-        rows = parseCSV(trimmed);
-      }
-
-      if (!Array.isArray(rows) || !rows.length) {
-        throw new Error('Aucune ligne exploitable détectée');
-      }
-
-      const transformed = transformRows(rows);
-      state.rawRows = transformed.rows;
-      state.filteredRows = transformed.rows;
-      state.columns = transformed.columns;
-      state.mapping = transformed.mapping;
-      state.sortKey = transformed.mapping.exprimes || transformed.mapping.votants || transformed.columns[0];
-      state.sortDir = 'desc';
-
-      updateFilters();
-      applyFilters();
-      setStatus(`Données chargées : ${sourceLabel} • ${prettyInt(state.rawRows.length)} lignes`);
-    }
-
-    async function loadFromUrl() {
-      const url = refs.urlInput.value.trim();
-      if (!url) return;
-      setStatus('Chargement depuis l’URL…');
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      await loadFromText(text, url);
-    }
-
-    async function searchOfficialDataset() {
-      const q = encodeURIComponent('résultats municipales 2026 premier tour');
-      const apiUrl = `https://www.data.gouv.fr/api/1/datasets/?q=${q}&page=1&page_size=20`;
-      const res = await fetch(apiUrl);
-      if (!res.ok) throw new Error(`API data.gouv.fr HTTP ${res.status}`);
-      const payload = await res.json();
-      const datasets = Array.isArray(payload.data) ? payload.data : [];
-
-      let best = null;
-      let bestScore = -1;
-      for (const ds of datasets) {
-        const dsTitle = normalizeName(ds.title || '');
-        for (const r of (ds.resources || [])) {
-          const title = normalizeName(`${ds.title || ''} ${r.title || ''} ${r.description || ''}`);
-          let score = 0;
-          if (title.includes('municip')) score += 4;
-          if (title.includes('2026')) score += 4;
-          if (title.includes('resultat')) score += 6;
-          if (title.includes('premier_tour') || title.includes('1er_tour') || title.includes('tour_1') || title.includes('t1')) score += 6;
-          const fmt = String(r.format || '').toLowerCase();
-          if (fmt === 'csv' || fmt === 'txt' || fmt === 'json') score += 3;
-          if (normalizeName(ds.title || '').includes('municip') && normalizeName(ds.title || '').includes('2026')) score += 2;
-          if (score > bestScore && r.url) {
-            best = r;
-            bestScore = score;
-          }
-        }
-      }
-      if (!best) throw new Error('Aucune ressource officielle pertinente trouvée sur data.gouv.fr');
-      return best;
-    }
-
-    async function autoFetchOfficial() {
-      setStatus('Recherche automatique de la ressource officielle…');
-      const resource = await searchOfficialDataset();
-      refs.urlInput.value = resource.url;
-      try {
-        setStatus(`Ressource détectée : ${resource.title || resource.url} • téléchargement en cours…`);
-        const res = await fetch(resource.url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const text = await res.text();
-        await loadFromText(text, resource.title || resource.url);
-      } catch (err) {
-        setStatus(`Ressource trouvée mais lecture bloquée dans le navigateur (${err.message}). Utilise le bouton d’import ou héberge ce HTML sur un serveur web pour contourner la limite CORS.`);
-      }
-    }
-
+    function renderAll() { renderStats(); renderTable(); drawBarChart(); drawDonutChart(); renderMapping(); }
+    function resetAll() { refs.searchInput.value = ''; refs.deptFilter.value = ''; refs.communeFilter.value = ''; refs.topNSelect.value = '10'; applyFilters(); }
     function exportFilteredJson() {
       const blob = new Blob([JSON.stringify(state.filteredRows, null, 2)], { type: 'application/json;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'dashboard_elections_export.json';
-      a.click();
-      URL.revokeObjectURL(url);
+      const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'dashboard_municipales_ministere_export.json'; a.click(); URL.revokeObjectURL(url);
     }
-
-    function resetAll() {
-      refs.searchInput.value = '';
-      refs.deptFilter.value = '';
-      refs.communeFilter.value = '';
-      refs.topNSelect.value = '10';
-      applyFilters();
-    }
-
-    function formatCell(value) {
-      if (value == null || value === '') return '<span class="muted">—</span>';
-      if (typeof value === 'number') return prettyInt(value);
-      const s = String(value);
-      const n = smartNumber(s);
-      if (/^[-+]?\d[\d\s.,%]*$/.test(s) && n !== 0) return prettyInt(n);
-      return escapeHtml(s);
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function escapeAttr(str) {
-      return escapeHtml(str).replace(/`/g, '&#096;');
-    }
-
+    function escapeHtml(str) { return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
+    function escapeAttr(str) { return escapeHtml(str).replace(/`/g, '&#096;'); }
     function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-      const r = Math.min(radius, width / 2, height / 2);
-      ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + width, y, x + width, y + height, r);
-      ctx.arcTo(x + width, y + height, x, y + height, r);
-      ctx.arcTo(x, y + height, x, y, r);
-      ctx.arcTo(x, y, x + width, y, r);
-      ctx.closePath();
-      if (fill) ctx.fill();
-      if (stroke) ctx.stroke();
+      const r = Math.min(radius, width / 2, height / 2); ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + width, y, x + width, y + height, r); ctx.arcTo(x + width, y + height, x, y + height, r); ctx.arcTo(x, y + height, x, y, r); ctx.arcTo(x, y, x + width, y, r); ctx.closePath(); if (fill) ctx.fill(); if (stroke) ctx.stroke();
     }
-
     refs.fileInput.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      try {
-        setStatus(`Lecture du fichier ${file.name}…`);
-        const text = await readFileSmart(file);
-        await loadFromText(text, file.name);
-      } catch (err) {
-        setStatus(`Erreur : ${err.message}`);
-      }
+      const file = e.target.files[0]; if (!file) return;
+      try { setStatus(`Lecture du fichier ${file.name}…`); const text = await readFileSmart(file); await loadFromText(text, file.name); }
+      catch (err) { setStatus(`Erreur : ${err.message}`); }
     });
-
-    refs.loadUrlBtn.addEventListener('click', async () => {
-      try {
-        await loadFromUrl();
-      } catch (err) {
-        setStatus(`Erreur URL : ${err.message}`);
-      }
-    });
-
-    refs.autoFetchBtn.addEventListener('click', async () => {
-      try {
-        await autoFetchOfficial();
-      } catch (err) {
-        setStatus(`Erreur auto-fetch : ${err.message}`);
-      }
-    });
-
-    refs.loadDemoBtn.addEventListener('click', async () => {
-      await loadFromText(JSON.stringify(demoData), 'jeu de démonstration intégré');
-    });
-
-    refs.exportJsonBtn.addEventListener('click', exportFilteredJson);
-    refs.resetBtn.addEventListener('click', resetAll);
-    refs.searchInput.addEventListener('input', applyFilters);
-    refs.deptFilter.addEventListener('change', applyFilters);
-    refs.communeFilter.addEventListener('change', applyFilters);
-    refs.topNSelect.addEventListener('change', () => { drawBarChart(); });
+    refs.loadUrlBtn.addEventListener('click', async () => { try { await loadMinistereUrl(refs.urlInput.value.trim()); } catch (err) { setStatus(`Erreur URL : ${err.message}`); } });
+    refs.autoFetchBtn.addEventListener('click', async () => { await autoFetchOfficial(); });
+    refs.loadDemoBtn.addEventListener('click', async () => { await loadFromText(JSON.stringify(demoData), 'jeu de démonstration intégré'); });
+    refs.exportJsonBtn.addEventListener('click', exportFilteredJson); refs.resetBtn.addEventListener('click', resetAll); refs.searchInput.addEventListener('input', applyFilters); refs.deptFilter.addEventListener('change', applyFilters); refs.communeFilter.addEventListener('change', applyFilters); refs.topNSelect.addEventListener('change', drawBarChart);
+    refs.urlInput.addEventListener('keydown', async (e) => { if (e.key === 'Enter') { e.preventDefault(); try { await loadMinistereUrl(refs.urlInput.value.trim()); } catch (err) { setStatus(`Erreur URL : ${err.message}`); } } });
     window.addEventListener('resize', () => { if (state.filteredRows.length) { drawBarChart(); drawDonutChart(); } });
-
-    ['dragenter', 'dragover'].forEach(evt => refs.dropzone.addEventListener(evt, e => {
-      e.preventDefault();
-      e.stopPropagation();
-      refs.dropzone.classList.add('dragover');
-    }));
-
-    ['dragleave', 'drop'].forEach(evt => refs.dropzone.addEventListener(evt, e => {
-      e.preventDefault();
-      e.stopPropagation();
-      refs.dropzone.classList.remove('dragover');
-    }));
-
+    ['dragenter', 'dragover'].forEach(evt => refs.dropzone.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); refs.dropzone.classList.add('dragover'); }));
+    ['dragleave', 'drop'].forEach(evt => refs.dropzone.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); refs.dropzone.classList.remove('dragover'); }));
     refs.dropzone.addEventListener('drop', async (e) => {
-      const file = e.dataTransfer.files[0];
-      if (!file) return;
-      try {
-        setStatus(`Lecture du fichier ${file.name}…`);
-        const text = await readFileSmart(file);
-        await loadFromText(text, file.name);
-      } catch (err) {
-        setStatus(`Erreur : ${err.message}`);
-      }
+      const file = e.dataTransfer.files[0]; if (!file) return;
+      try { setStatus(`Lecture du fichier ${file.name}…`); const text = await readFileSmart(file); await loadFromText(text, file.name); }
+      catch (err) { setStatus(`Erreur : ${err.message}`); }
     });
-
     const demoData = [
       { departement: 'Bouches-du-Rhône', commune: 'Aix-en-Provence', inscrits: '103245', votants: '61230', blancs: '1320', nuls: '860', exprimes: '59050' },
       { departement: 'Bouches-du-Rhône', commune: 'Marseille', inscrits: '412550', votants: '205000', blancs: '4850', nuls: '3200', exprimes: '196950' },
@@ -1146,7 +613,6 @@
       { departement: 'Hérault', commune: 'Montpellier', inscrits: '171400', votants: '76220', blancs: '1520', nuls: '810', exprimes: '73890' },
       { departement: 'Alpes-Maritimes', commune: 'Nice', inscrits: '221050', votants: '101880', blancs: '2100', nuls: '1200', exprimes: '98580' }
     ];
-
     loadFromText(JSON.stringify(demoData), 'jeu de démonstration intégré');
   </script>
 </body>
