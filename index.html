@@ -417,6 +417,10 @@
             <button id="loadUrlBtn" class="button">Charger depuis URL</button>
             <label class="file-label" for="fileInput">Importer un fichier</label>
           </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <button id="autoFetchBtn" class="button">Fetch officiel auto</button>
+            <button id="loadDemoBtn" class="button secondary">Recharger démo</button>
+          </div>
           <input id="fileInput" class="file-input" type="file" accept=".csv,.txt,.json" />
           <div id="dropzone" class="dropzone">
             Glisse-dépose ici un fichier officiel (.csv, .txt, .json)
@@ -520,6 +524,8 @@
       fileInput: document.getElementById('fileInput'),
       urlInput: document.getElementById('urlInput'),
       loadUrlBtn: document.getElementById('loadUrlBtn'),
+      autoFetchBtn: document.getElementById('autoFetchBtn'),
+      loadDemoBtn: document.getElementById('loadDemoBtn'),
       dropzone: document.getElementById('dropzone'),
       searchInput: document.getElementById('searchInput'),
       deptFilter: document.getElementById('deptFilter'),
@@ -966,6 +972,53 @@
       await loadFromText(text, url);
     }
 
+    async function searchOfficialDataset() {
+      const q = encodeURIComponent('résultats municipales 2026 premier tour');
+      const apiUrl = `https://www.data.gouv.fr/api/1/datasets/?q=${q}&page=1&page_size=20`;
+      const res = await fetch(apiUrl);
+      if (!res.ok) throw new Error(`API data.gouv.fr HTTP ${res.status}`);
+      const payload = await res.json();
+      const datasets = Array.isArray(payload.data) ? payload.data : [];
+
+      let best = null;
+      let bestScore = -1;
+      for (const ds of datasets) {
+        const dsTitle = normalizeName(ds.title || '');
+        for (const r of (ds.resources || [])) {
+          const title = normalizeName(`${ds.title || ''} ${r.title || ''} ${r.description || ''}`);
+          let score = 0;
+          if (title.includes('municip')) score += 4;
+          if (title.includes('2026')) score += 4;
+          if (title.includes('resultat')) score += 6;
+          if (title.includes('premier_tour') || title.includes('1er_tour') || title.includes('tour_1') || title.includes('t1')) score += 6;
+          const fmt = String(r.format || '').toLowerCase();
+          if (fmt === 'csv' || fmt === 'txt' || fmt === 'json') score += 3;
+          if (normalizeName(ds.title || '').includes('municip') && normalizeName(ds.title || '').includes('2026')) score += 2;
+          if (score > bestScore && r.url) {
+            best = r;
+            bestScore = score;
+          }
+        }
+      }
+      if (!best) throw new Error('Aucune ressource officielle pertinente trouvée sur data.gouv.fr');
+      return best;
+    }
+
+    async function autoFetchOfficial() {
+      setStatus('Recherche automatique de la ressource officielle…');
+      const resource = await searchOfficialDataset();
+      refs.urlInput.value = resource.url;
+      try {
+        setStatus(`Ressource détectée : ${resource.title || resource.url} • téléchargement en cours…`);
+        const res = await fetch(resource.url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        await loadFromText(text, resource.title || resource.url);
+      } catch (err) {
+        setStatus(`Ressource trouvée mais lecture bloquée dans le navigateur (${err.message}). Utilise le bouton d’import ou héberge ce HTML sur un serveur web pour contourner la limite CORS.`);
+      }
+    }
+
     function exportFilteredJson() {
       const blob = new Blob([JSON.stringify(state.filteredRows, null, 2)], { type: 'application/json;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -1037,6 +1090,18 @@
       } catch (err) {
         setStatus(`Erreur URL : ${err.message}`);
       }
+    });
+
+    refs.autoFetchBtn.addEventListener('click', async () => {
+      try {
+        await autoFetchOfficial();
+      } catch (err) {
+        setStatus(`Erreur auto-fetch : ${err.message}`);
+      }
+    });
+
+    refs.loadDemoBtn.addEventListener('click', async () => {
+      await loadFromText(JSON.stringify(demoData), 'jeu de démonstration intégré');
     });
 
     refs.exportJsonBtn.addEventListener('click', exportFilteredJson);
